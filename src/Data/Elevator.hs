@@ -9,11 +9,11 @@
 -- Re-use existing code by coercing functions that can be generalised according
 -- to the levity polymorphism subkinding law @Unlifted <: Lifted@ with
 -- 'levCoerce'.
---
+
 module Data.Elevator
   ( UnliftedType, LiftedType
   , Strict(Strict), Lazy(Lazy)
-  , LevitySubsumption(..), levCoerce
+  , levCoerce, LevitySubsumption(..)
   ) where
 
 import Data.Elevator.Internal

@@ -1,5 +1,5 @@
 {-# LANGUAGE TypeApplications #-}
-{-# LANGUAGE MagicHash #-}
+{-# LANGUAGE MagicHash        #-}
 
 module Main where
 
@@ -18,6 +18,7 @@ main = hspec $ do
              konst x y = x
         in konst 42 a)
         `shouldThrow` \(SomeException e) -> True
+
   describe "Lazy" $ do
     it "lazy" $ do
       (let a = Lazy (error "boom" :: Array# Int)

@@ -1,19 +1,19 @@
-{-# LANGUAGE BangPatterns        #-}
-{-# LANGUAGE DataKinds           #-}
-{-# LANGUAGE PolyKinds           #-}
-{-# LANGUAGE KindSignatures      #-}
-{-# LANGUAGE TypeApplications    #-}
-{-# LANGUAGE RoleAnnotations     #-}
-{-# LANGUAGE MagicHash           #-}
-{-# LANGUAGE PatternSynonyms #-}
-{-# LANGUAGE ViewPatterns #-}
-{-# LANGUAGE GADTs #-}
-{-# LANGUAGE UnliftedNewtypes #-}
+{-# LANGUAGE BangPatterns          #-}
+{-# LANGUAGE DataKinds             #-}
+{-# LANGUAGE PolyKinds             #-}
+{-# LANGUAGE KindSignatures        #-}
+{-# LANGUAGE TypeApplications      #-}
+{-# LANGUAGE RoleAnnotations       #-}
+{-# LANGUAGE MagicHash             #-}
+{-# LANGUAGE PatternSynonyms       #-}
+{-# LANGUAGE ViewPatterns          #-}
+{-# LANGUAGE GADTs                 #-}
+{-# LANGUAGE UnliftedNewtypes      #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE ExplicitForAll #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE InstanceSigs #-}
+{-# LANGUAGE FlexibleInstances     #-}
+{-# LANGUAGE ExplicitForAll        #-}
+{-# LANGUAGE ScopedTypeVariables   #-}
+{-# LANGUAGE InstanceSigs          #-}
 
 -- | This module doesn't respect the PVP!
 -- Breaking changes may happen at any minor version (^>= *.*.m.*)
@@ -24,6 +24,8 @@ import GHC.Exts
 import Data.Kind
 import Unsafe.Coerce
 
+-- | The kind of boxed, lifted types, for example @[Int]@ or any other
+-- user-defined data type.
 type LiftedType = Type
 
 type U = UnliftedType
