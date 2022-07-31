@@ -2,6 +2,8 @@ cabal-version:      2.4
 name:               data-elevator
 version:            0.1.0.0
 
+tested-with: GHC ==9.2.3 || ==9.4.1
+
 -- A short (one-line) description of the package.
 synopsis: Coerce between unlifted boxed and lifted types.
 
@@ -14,9 +16,6 @@ description: Near zero-cost coercions between unlifted boxed and lifted types.
              and a coercion function `levCoerce` to coerce existing functions
              into accepting `Strict` wrapper
 
--- A URL where users can report bugs.
-bug-reports:
-
 -- The license under which the package is released.
 license: MIT
 
@@ -28,8 +27,14 @@ maintainer: sgraf1337@gmail.com
 
 -- A copyright notice.
 copyright: 2022
--- category:
+category: Data
 extra-source-files: CHANGELOG.md
+
+bug-reports: https://github.com/sgraf812/data-elevator/issues
+
+source-repository head
+  type: git
+  location: https://github.com/sgraf812/data-elevator
 
 library
     exposed-modules:  Data.Elevator
