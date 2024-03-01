@@ -57,6 +57,7 @@ pattern Strict :: a -> Strict a
 pattern Strict x <- (fromStrict# -> x) where
   Strict x = toStrict# x
 {-# INLINE Strict #-}
+{-# COMPLETE Strict #-}
 
 
 type role Lazy representational
@@ -82,6 +83,7 @@ pattern Lazy :: a -> Lazy a
 pattern Lazy x <- (fromLazy# -> x) where
   Lazy x = toLazy# x
 {-# INLINE Lazy #-}
+{-# COMPLETE Lazy #-}
 
 
 -- | Re-use existing code taking arguments lazily to take arguments 'Strict'ly
