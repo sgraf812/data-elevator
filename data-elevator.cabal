@@ -1,8 +1,8 @@
 cabal-version:      2.4
 name:               data-elevator
-version:            0.1.0.0
+version:            0.1.0.2
 
-tested-with: GHC ==9.2.3 || ==9.4.1
+tested-with: GHC ==9.2.8 || ==9.4.8 || ==9.6.6 || ==9.8.2 || ==9.10.1
 
 -- A short (one-line) description of the package.
 synopsis: Coerce between unlifted boxed and lifted types.
@@ -44,7 +44,7 @@ library
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
-    build-depends:    base >=4.16 && <4.18
+    build-depends:    base >=4.16 && <4.21
     hs-source-dirs:   src
     default-language: Haskell2010
 
@@ -56,6 +56,6 @@ test-suite data-elevator-test
     -- hs-source-dirs:
     main-is:          Main.hs
     hs-source-dirs:   test
-    build-depends:    base >=4.16 && <4.18
+    build-depends:    base >=4.16 && <4.21
                     , data-elevator
                     , hspec
