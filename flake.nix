@@ -16,7 +16,7 @@
         pkgs = nixpkgs.legacyPackages.${system};
 
         #haskellPackages = pkgs.haskellPackages;
-        haskellPackages = pkgs.haskell.packages.ghc923;
+        haskellPackages = pkgs.haskell.packages.ghc9101;
 
         jailbreakUnbreak = pkg:
           pkgs.haskell.lib.doJailbreak (pkg.overrideAttrs (_: { meta = { }; }));
