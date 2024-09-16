@@ -1,7 +1,5 @@
-{-# LANGUAGE BangPatterns          #-}
 {-# LANGUAGE DataKinds             #-}
 {-# LANGUAGE PolyKinds             #-}
-{-# LANGUAGE KindSignatures        #-}
 {-# LANGUAGE TypeApplications      #-}
 {-# LANGUAGE RoleAnnotations       #-}
 {-# LANGUAGE MagicHash             #-}
@@ -11,9 +9,7 @@
 {-# LANGUAGE UnliftedNewtypes      #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE FlexibleInstances     #-}
-{-# LANGUAGE ExplicitForAll        #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE InstanceSigs          #-}
 
 -- | This module doesn't respect the PVP!
 -- Breaking changes may happen at any minor version (^>= *.*.m.*)
