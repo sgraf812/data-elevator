@@ -1,5 +1,6 @@
 {-# OPTIONS_GHC -fplugin=Test.Inspection.Plugin #-}
 
+{-# LANGUAGE CPP              #-}
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE MagicHash        #-}
 {-# LANGUAGE UnboxedTuples    #-}
@@ -56,6 +57,9 @@ main = hspec $ do
       let sarr = Issue4.primArrayToStrictArray arr
       Issue4.indexStrictArray sarr 3 `shouldBe` True
 
+-- Before 9.6, the let/app invariant is still in effect and the rewrite rules
+-- error
+#if __GLASGOW_HASKELL__ >= 906
 from_to_strict :: Bool -> Bool
 from_to_strict x = fromStrict# (toStrict# x)
 
@@ -72,3 +76,4 @@ inspect $ 'from_to_strict `doesNotUse` 'toStrict#
 inspect $ ('from_to_strict2 `doesNotUse` 'toStrict#) { expectFail = True } -- https://gitlab.haskell.org/ghc/ghc/-/issues/25261
 inspect $ 'to_from_lazy `doesNotUse` 'fromLazy#
 inspect $ ('to_from_lazy2 `doesNotUse` 'fromLazy#) { expectFail = True } -- https://gitlab.haskell.org/ghc/ghc/-/issues/25261
+#endif

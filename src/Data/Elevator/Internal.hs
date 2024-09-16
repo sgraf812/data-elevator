@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP                   #-}
 {-# LANGUAGE DataKinds             #-}
 {-# LANGUAGE PolyKinds             #-}
 {-# LANGUAGE TypeApplications      #-}
@@ -46,8 +47,13 @@ newtype Strict (a :: LiftedType) where
 toStrict# :: a -> Strict a
 toStrict# = unsafeCoerce id
 {-# NOINLINE toStrict# #-} -- See Note [NOINLINE toStrict#/fromLazy#]
+
+-- Before 9.6, the let/app invariant is still in effect and the rewrite rules
+-- error
+#if __GLASGOW_HASKELL__ >= 906
 {-# RULES "fromStrict#.toStrict#" forall x. fromStrict# (toStrict# x) = x #-}
 {-# RULES "toLazy#.toStrict#" forall x. toLazy# (toStrict# x) = unsafeCoerce id x #-}
+#endif
 
 fromStrict# :: Strict a -> a
 fromStrict# = unsafeCoerce id
@@ -80,8 +86,13 @@ toLazy# = unsafeCoerce id
 fromLazy# :: Lazy a -> a
 fromLazy# = unsafeCoerce id
 {-# NOINLINE fromLazy# #-} -- See Note [NOINLINE toStrict#/fromLazy#]
+
+-- Before 9.6, the let/app invariant is still in effect and the rewrite rules
+-- error
+#if __GLASGOW_HASKELL__ >= 906
 {-# RULES "toLazy#.fromLazy#" forall x. toLazy# (fromLazy# x) = x #-}
 {-# RULES "fromStrict#.fromLazy#" forall x. fromStrict# (fromLazy# x) = unsafeCoerce id x #-}
+#endif
 
 pattern Lazy :: a -> Lazy a
 pattern Lazy x <- (fromLazy# -> x) where
