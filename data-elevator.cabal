@@ -1,6 +1,6 @@
 cabal-version:      2.4
 name:               data-elevator
-version:            0.1.0.2
+version:            0.2
 
 tested-with: GHC ==9.2.8 || ==9.4.8 || ==9.6.6 || ==9.8.2 || ==9.10.1
 
@@ -56,6 +56,9 @@ test-suite data-elevator-test
     -- hs-source-dirs:
     main-is:          Main.hs
     hs-source-dirs:   test
+    other-modules:    Issue4
     build-depends:    base >=4.16 && <4.21
                     , data-elevator
+                    , primitive
                     , hspec
+                    , inspection-testing

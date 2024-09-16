@@ -49,9 +49,13 @@ newtype Strict (a :: LiftedType) where
 
 toStrict# :: a -> Strict a
 toStrict# = unsafeCoerce id
+{-# NOINLINE toStrict# #-} -- See Note [NOINLINE toStrict#/fromLazy#]
+{-# RULES "fromStrict#.toStrict#" forall x. fromStrict# (toStrict# x) = x #-}
+{-# RULES "toLazy#.toStrict#" forall x. toLazy# (toStrict# x) = unsafeCoerce id x #-}
 
 fromStrict# :: Strict a -> a
 fromStrict# = unsafeCoerce id
+{-# INLINE[0] fromStrict# #-} -- See Note [NOINLINE toStrict#/fromLazy#]
 
 pattern Strict :: a -> Strict a
 pattern Strict x <- (fromStrict# -> x) where
@@ -75,9 +79,13 @@ newtype Lazy (a :: UnliftedType) where
 
 toLazy# :: a -> Lazy a
 toLazy# = unsafeCoerce id
+{-# INLINE[0] toLazy# #-} -- See Note [NOINLINE toStrict#/fromLazy#]
 
 fromLazy# :: Lazy a -> a
 fromLazy# = unsafeCoerce id
+{-# NOINLINE fromLazy# #-} -- See Note [NOINLINE toStrict#/fromLazy#]
+{-# RULES "toLazy#.fromLazy#" forall x. toLazy# (fromLazy# x) = x #-}
+{-# RULES "fromStrict#.fromLazy#" forall x. fromStrict# (fromLazy# x) = unsafeCoerce id x #-}
 
 pattern Lazy :: a -> Lazy a
 pattern Lazy x <- (fromLazy# -> x) where
@@ -217,3 +225,38 @@ instance {-# OVERLAPPING #-} (LevitySubsumption a2 a1, LevitySubsumption b1 b2) 
   -- Specification:
   -- > levCoerce# f x = levCoerce# (f (levCoerce# x :: a1))
   levCoerce# f x = unsafeCoerce# f x
+
+{- Note [NOINLINE toStrict#/fromLazy#]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+It is important GHC does not regard the expression `Strict x` as trivial.
+This is because CorePrep will not case-bind `Strict x` in `f (Strict x)` when it
+is trivial, in which case we do not get proper call-by-value for the call to `f`.
+
+However, if we inline the Strict and the toStrict#, what we get is
+`f (x |> co)`, and `x |> co` is trivial.
+So, sadly we need to mark `toStrict#` as NOINLINE; in which case we get
+`f (toStrict# x)`, where `toStrict# x` is non-trivial and thus properly
+case-bound by CorePrep: `case toStrict# x of x' { __DEFAULT -> f x' }`.
+
+But this means that expressions such as `toLazy# (toStrict# x)` are no longer
+optimised to `x`. We fix that by introducing the rewrite rules
+
+  forall x. fromStrict# (toStrict# x) = x
+  forall x. toLazy# (toStrict# x) = unsafeCoerce id x -- will desugar to x |> co
+
+Thus we keep the zero-cost promise.
+
+This applies to `fromLazy#` as well. Note the following desugaring
+
+  case x of Lazy y -> f y
+  ==> {INLINE, including `fromLazy#`, CorePrep}
+  f (x |> co)
+
+Note the absence of a seq on `x`. If we do not inline `fromLazy#`, we get
+
+  f (fromLazy# x)
+  ==> {CorePrep}
+  case fromLazy# x of y { __DEFAULT -> f y }
+
+Much better. We need similar rewrite rules, however.
+-}
