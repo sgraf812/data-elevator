@@ -51,11 +51,14 @@ main = hspec $ do
       it "rank2 co: (Int -> Int) -> Int ~ (Strict Int -> Int) -> Int" $ do
         levCoerce @((Strict Int -> Int) -> Int) @((Int -> Strict Int) -> Int) (\f -> f (Strict 42)) (\x -> Strict x) `shouldBe` (42 :: Int)
 
+-- 9.2 does not allow lev poly GHC.Array#
+#if __GLASGOW_HASKELL__ >= 904
   describe "Issue 4" $ do
     it "should not crash" $ do
       let arr = P.createArray 5 (even (sum [0..1000]) :: Bool) (\_arr -> return ())
       let sarr = Issue4.primArrayToStrictArray arr
       Issue4.indexStrictArray sarr 3 `shouldBe` True
+#endif
 
 -- Before 9.6, the let/app invariant is still in effect and the rewrite rules
 -- error

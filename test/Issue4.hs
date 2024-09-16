@@ -1,14 +1,10 @@
 {-# OPTIONS_GHC -O2              #-}
+{-# LANGUAGE CPP                 #-}
 {-# LANGUAGE MagicHash           #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications    #-}
 {-# LANGUAGE UnboxedTuples       #-}
-module Issue4 (
-    StrictArray,
-    primArrayToStrictArray,
-    indexStrictArray,
-    sizeofStrictArray,
-) where
+module Issue4 where
 
 import           Data.Elevator (Strict (Strict))
 import qualified Data.Primitive as P
@@ -16,6 +12,8 @@ import qualified GHC.Exts as GHC
 import           GHC.Exts ((+#))
 import           GHC.ST (ST(ST), runST)
 
+-- 9.2 does not allow lev poly GHC.Array#
+#if __GLASGOW_HASKELL__ >= 904
 data StrictArray a = StrictArray !(GHC.Array# (Strict a))
 
 primArrayToStrictArray :: forall a. P.Array a -> StrictArray a
@@ -57,3 +55,4 @@ indexStrictArray (StrictArray a#) (GHC.I# i#) =
 sizeofStrictArray :: StrictArray a -> Int
 sizeofStrictArray (StrictArray a#) =
     GHC.I# (GHC.sizeofArray# a#)
+#endif
