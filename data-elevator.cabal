@@ -24,10 +24,8 @@ author: Sebastian Graf
 -- An email address to which users can send suggestions, bug reports, and patches.
 maintainer: sgraf1337@gmail.com
 
--- A copyright notice.
-copyright: 2022
 category: Data
-extra-source-files: CHANGELOG.md
+extra-doc-files: CHANGELOG.md
 
 bug-reports: https://github.com/sgraf812/data-elevator/issues
 
