@@ -1,5 +1,9 @@
 # Revision history for data-elevator
 
+## ?.? -- ????-??-??
+
+* Added support for GHC version 9.12
+
 ## 0.2 -- 2024-09-16
 
 No changes to the API, but a significant change to the conversion functions.
