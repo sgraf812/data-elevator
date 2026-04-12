@@ -1,6 +1,6 @@
 cabal-version:      2.4
 name:               data-elevator
-version:            0.2
+version:            0.3
 
 tested-with: GHC ==9.2.8 || ==9.4.8 || ==9.6.6 || ==9.8.2 || ==9.10.1 || ==9.12.1 || ==9.14.1
 
