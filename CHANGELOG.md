@@ -2,7 +2,7 @@
 
 ## ?.? -- ????-??-??
 
-* Added support for GHC version 9.12
+* Added support for GHC versions 9.12 and 9.14
 
 ## 0.2 -- 2024-09-16
 
